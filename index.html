@@ -1470,7 +1470,16 @@ document.addEventListener("click",function(e){
   if(jc){e.preventDefault();var n=jc.getAttribute("data-nav");if(("#"+n)===location.hash){activate(n);}else{location.hash=n;}return;}
   var ni=e.target.closest(".ni[for]");
   if(ni){var f=ni.getAttribute("for");if(f&&f.indexOf("v-")===0){var name=f.slice(2);if(SECTIONS[name]){setTimeout(function(){if(("#"+name)===location.hash){activate(name);}else{location.hash=name;}},0);}}return;}
-  if(e.target.closest(".subtab")){scrollDet(e.target.closest("details"));return;}
+  var st=e.target.closest(".subtab");
+  if(st){var fid=st.getAttribute("for");if(fid){var inp=document.getElementById(fid);if(inp){e.preventDefault();inp.checked=true;try{inp.focus({preventScroll:true});}catch(_){}}}return;}
   var sm=e.target.closest(".acc>summary");if(sm){var det=sm.parentElement;setTimeout(function(){if(det.open)scrollDet(det);},10);}
 });
+/* ---- single-open accordions: opening one .iacc closes the others in the same page (Digital, Owned social, Influencers, PR, Reddit) ---- */
+document.addEventListener("toggle",function(e){
+  var d=e.target;
+  if(!d||d.tagName!=="DETAILS"||!d.open||!d.classList||!d.classList.contains("iacc"))return;
+  var page=d.closest(".page")||document;
+  var open=page.querySelectorAll("details.iacc[open]"),i,o;
+  for(i=0;i<open.length;i++){o=open[i];if(o!==d&&!o.contains(d)&&!d.contains(o))o.open=false;}
+},true);
 })();</script></body></html>
